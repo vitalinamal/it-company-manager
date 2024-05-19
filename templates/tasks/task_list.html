@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="projects no-padding-top">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+          <div class="d-flex align-items-center mb-3">
+            <h1 class="mb-0 me-2">All tasks</h1>
+            {% if request.user.is_superuser %}
+              <a href="{% url "tasks:task-create" %}" class="btn btn-light btn-sm">➕</a>
+            {% endif %}
+          </div>
+          <p class="lead mb-0">All tasks in the company for now</p>
+        </div>
+        <form action="" method="get" class="d-flex align-items-center" style="width: auto; max-width: 500px;">
+          {{ search_form }}
+          <button class="btn btn-secondary ms-2" type="submit">🔎</button>
+        </form>
+      </div>
+
+      <div class="row bg-primary rounded text-white p-2 mb-2">
+        <div class="col-lg-2">
+          <h6 style="padding-left: 20px">Task</h6>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <h6 style="padding-right: 40px">Deadline</h6>
+        </div>
+        <div style="padding-left: 30px" class="col-lg-4 text-lg-start">
+          <h6>Completed</h6>
+        </div>
+      </div>
+
+      {% for task in task_list %}
+        <div class="project">
+          <div class="row bg-white has-shadow">
+            <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
+              <div class="project-title d-flex align-items-center">
+                <span style="background: #796AEE" class="avatar avatar-text rounded-3 me-4 mb-2">⚙️</span>
+                <div class="text">
+                  <h3 class="h4">
+                    <a style="text-decoration: none; color: black"
+                       href="{% url "tasks:task-detail" pk=task.id %}">{{ task.name }}</a>
+                  </h3><small>Priority: {{ task.priority }}</small>
+                </div>
+              </div>
+              <div class="project-date"><span class="hidden-sm-down">{{ task.deadline|date:"F j, Y, g:i A" }}</span>
+              </div>
+            </div>
+            <div class="right-col col-lg-6 d-flex align-items-center justify-content-between">
+              {% if task.is_completed %}
+                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
+                     style="width: 40px; height: 40px; font-size: 1rem; margin-left: 40px"> Y
+                </div>
+              {% else %}
+                <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center"
+                     style="width: 40px; height: 40px; font-size: 1rem; margin-left: 40px"> N
+                </div>
+              {% endif %}
+              <div class="project-progress text-lg-end">
+                <a href="{% url "tasks:task-detail" pk=task.id %}">
+                  <button class="btn btn-primary">Details</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h4>No tasks!</h4>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="mt-5">
+      <div class="d-style btn btn-brc-t border-2 bgc-white w-100 my-2 py-3 shadow-sm">
+        <div class="row align-items-center">
+          <div class="col-12 col-md-4">
+            <h4 class="pt-3 text-170 text-600 text-primary-d1 letter-spacing">
+              {{ task.name }}
+            </h4>
+            <div class="text-secondary-d1 text-120">
+              <span class="ml-n15 align-text-bottom">{{ task.priority }}</span>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-0 col-12 col-md-4 text-dark-l1 text-90 text-left my-4 my-md-0">
+            <li>
+              <span class="text-110">
+                <strong>Task type:</strong> {{ task.task_type.name }}
+              </span>
+            </li>
+            <li class="mt-25">
+              <span class="text-110">
+                <strong>Deadline:</strong> {{ task.deadline|date:"F j, Y, g:i A" }}
+              </span>
+            </li>
+            <li class="mt-25">
+              <span class="text-110">
+                <strong>Completed:</strong> {% if not task.is_completed %} No {% else %} Yes {% endif %}
+              </span>
+            </li>
+            <li class="mt-25 col-md-12">
+              <span class="text-110">
+                <strong>Description:</strong> {{ task.description }}
+              </span>
+            </li>
+          </ul>
+          <div class="col-12 col-md-4 text-end d-flex flex-column align-items-end">
+            {% if request.user in task.assignees.all %}
+              <form action="{% url "tasks:worker-assign-remove" pk=task.id %}" method="post" class="mb-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger link-to-page w-100">Remove me from this task</button>
+              </form>
+            {% else %}
+              <form action="{% url "tasks:worker-assign-remove" pk=task.id %}" method="post" class="mb-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success link-to-page w-100">Assign me to this task</button>
+              </form>
+            {% endif %}
+            {% if request.user.is_superuser %}
+              <div class="d-flex justify-content-between w-50">
+                <a href="{% url "tasks:task-update" pk=task.id %}" class="btn btn-primary w-50 me-2">Edit</a>
+                <a href="{% url "tasks:task-delete" pk=task.id %}" class="btn btn-danger w-50">Delete</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-6 text-start">
+        <h5>Workers assigned to the task</h5>
+      </div>
+      <div class="col-md-6 text-end">
+        <a href="{% url "tasks:comment-list" pk=task.id %}" class="btn btn-warning link-to-page">Leave comment</a>
+      </div>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+      {% for worker in task.assignees.all %}
+        <div class="col">
+          <div class="card radius-15">
+            <div class="card-body text-center">
+              <div class="p-4 border radius-15">
+                {% if not worker.avatar %}
+                  <img src="{% static "images/user.jpg" %}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% else %}
+                  <img src="{{ worker.avatar.url }}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% endif %}
+                <h5 class="mb-0 mt-5">{{ worker }}</h5>
+                <p class="mb-3">{{ worker.position }}</p>
+                <div class="d-grid"><a href="{% url "tasks:worker-detail" pk=worker.id %}"
+                                       class="btn btn-outline-primary radius-15">View profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h4>No workers!</h4>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
