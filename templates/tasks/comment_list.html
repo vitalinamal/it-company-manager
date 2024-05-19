@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container pt-3">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h6 class="text-center">Add a new comment to {{ task }} task</h6>
+        {% if user.is_authenticated %}
+          <form action="{% url "tasks:comment-list" pk=task.pk %}" method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ comment_form.as_p }}
+            </div>
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+          </form>
+        {% else %}
+          <p class="text-center">You must be logged in to post comments.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="pt-3">
+      <div class="row justify-content-center">
+        <div class="col-10 mb-3"><h6>{{ task.comment_count }} comment{{ task.comment_count|pluralize }}</h6></div>
+        {% for comment in page_obj.object_list %}
+          <div class="col-10 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="card-text mb-0">{{ comment.content }}</p>
+                  {% if request.user == comment.user or request.user.is_superuser %}
+                    <form method="post" action="{% url "tasks:comment-delete" pk=comment.pk %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger btn-sm">❌</button>
+                    </form>
+                  {% endif %}
+                </div>
+                <p class="card-text mt-2">
+                  <small class="text-muted">
+                    Posted by <a href="{% url "tasks:worker-detail" pk=comment.user.id %}">{{ comment.user }}</a>
+                    on {{ comment.created_time|date:"F j, Y, g:i a" }}
+                  </small>
+                </p>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <p class="text-center">No comments yet.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
