@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="mb-0">Workers</h1>
+        <p class="lead mb-0">All workers in the company</p>
+      </div>
+      <form action="" method="get" class="d-flex align-items-center" style="width: auto; max-width: 500px;">
+        {{ search_form }}
+        <button class="btn btn-secondary ms-2" type="submit">🔎</button>
+      </form>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+      {% for worker in worker_list %}
+        <div class="col mb-4">
+          <div class="card radius-15">
+            <div class="card-body text-center">
+              <div class="p-4 border radius-15">
+                {% if not worker.avatar %}
+                  <img src="{% static "images/user.jpg" %}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% else %}
+                  <img src="{{ worker.avatar.url }}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% endif %}
+                <h5 class="mb-0 mt-5">{{ worker }}</h5>
+                <p class="mb-3">{{ worker.position }}</p>
+                <div class="d-grid">
+                  <a href="{% url "tasks:worker-detail" pk=worker.id %}" class="btn btn-outline-primary radius-15">View
+                    profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h4>No workers!</h4>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

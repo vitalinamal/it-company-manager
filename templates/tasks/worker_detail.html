@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      <div class="col-lg-4">
+        <aside class="user-info-wrapper">
+          <div class="user-cover" style="background-image: url('{% static 'images/bg.jpg' %}');">
+            {% if worker.is_superuser %}
+              <div class="info-label" data-toggle="tooltip"><i class="icon-medal"></i>
+                admin
+              </div>
+            {% endif %}
+          </div>
+          <div class="user-info">
+            <div class="user-avatar">
+              {% if not worker.avatar %}
+                <img src="{% static "images/user.jpg" %}" width="110" height="110"
+                     class="rounded-circle shadow" alt="User">
+              {% else %}
+                <a class="edit-avatar" href="#"></a>
+                <img src="{{ worker.avatar.url }}" width="110" height="110"
+                     class="rounded-circle shadow" alt="User">
+              {% endif %}
+              {% if request.user == worker %}
+                <a href="{% url "tasks:avatar-upload" pk=worker.id %}" class="btn btn-warning btn-sm mt-2">Change
+                  Avatar</a>
+              {% endif %}
+            </div>
+            <div class="user-data">
+              <h4>{{ worker.first_name }} {{ worker.last_name }}</h4>
+              <span>{{ worker.position.name }}</span>
+            </div>
+          </div>
+        </aside>
+        <nav class="list-group">
+          <h6 class="list-group-item with-badge"><i class=" fa fa-th"></i> Username: {{ worker.username }}</h6>
+          <h6 class="list-group-item with-badge"><i class=" fa fa-th"></i> Position: {{ worker.position.name }}</h6>
+          <h6 class="list-group-item with-badge"><i class=" fa fa-th"></i> Email: <a
+              href="mailto:{{ worker.email }}">{{ worker.email }}</a></h6>
+        </nav>
+      </div>
+      <div class="col-lg-8">
+        <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+        <div class="table-responsive wishlist-table margin-bottom-none">
+          <table class="table">
+            {% if request.user == worker or request.user.is_superuser %}
+              <div class="float-end mb-3">
+                {% if request.user == worker %}
+                  <a class="btn btn-sm btn-outline-success me-3" href="{% url "tasks:worker-update" pk=worker.id %}">Edit
+                    profile</a>
+                {% endif %}
+                {% if request.user == worker or request.user.is_superuser %}
+                  <a class="btn btn-sm btn-outline-danger me-3" href="{% url "tasks:worker-delete" pk=worker.id %}">Delete
+                    profile</a>
+                {% endif %}
+              </div>
+            {% endif %}
+            <thead>
+            <tr>
+              <th>Assigned to tasks</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for task in worker.assigned_tasks.all %}
+              <tr>
+                <td>
+                  <div class="product-item d-flex align-items-center">
+                    <div class="emoji" style="font-size: 2em; margin-right: 10px;">⚙️</div>
+                    <div class="product-info">
+                      <h4 class="product-title"><a href="{% url "tasks:task-detail" pk=task.id %}">{{ task }}</a></h4>
+                      <div class="text-lg text-medium text-muted">{{ task.priority }}</div>
+                      <div>Deadline:
+                        <div class="d-inline text-success">{{ task.deadline|date:"F j, Y, g:i A" }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <a class="remove-from-cart" href="#" data-toggle="tooltip" title="" data-original-title="Remove item">
+                    <i class="icon-cross"></i>
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="2" class="text-center">
+                  <h5>No tasks</h5>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <hr class="mb-4">
+      </div>
+    </div>
+  </div>
+{% endblock %}
