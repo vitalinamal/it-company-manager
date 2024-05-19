@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container col-md-10">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <div>
+        <div class="d-flex align-items-center mb-3">
+          <h1 class="mb-0">Positions</h1>
+          {% if request.user.is_superuser %}
+            <a href="{% url "tasks:position-create" %}" class="btn btn-light btn-sm">➕</a>
+          {% endif %}
+        </div>
+        <p class="lead mb-0">All positions in the company</p>
+      </div>
+      <form action="" method="get" class="d-flex align-items-center" style="width: auto; max-width: 500px;">
+        {{ search_form }}
+        <button class="btn btn-secondary ms-2" type="submit">🔎</button>
+      </form>
+    </div>
+
+    {% for position in position_list %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-lg-row">
+            <span class="avatar avatar-text rounded-3 me-4 mb-2">💡</span>
+            <div class="row flex-fill">
+              <div class="col-sm-9">
+                <h4 class="h5">
+                  <a style="text-decoration: none; color: black;"
+                     href="{% url "tasks:position-detail" pk=position.id %}">{{ position }}</a>
+                </h4>
+                <span class="badge bg-success">
+                  <a style="text-decoration: none; color: white;"
+                     href="{% url "tasks:position-detail" pk=position.id %}">
+                    {{ position.worker_count }} worker{{ position.worker_count|pluralize }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-sm-3 text-lg-end">
+                <a href="{% url "tasks:position-detail" pk=position.id %}" class="btn btn-primary">Details</a>
+                {% if request.user.is_superuser %}
+                  <a href="{% url "tasks:position-delete" pk=position.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <h4>No positions!</h4>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="text-center mb-5">
+      <h3>All workers on position: {{ position.name }}</h3>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+      {% for worker in position.workers.all %}
+        <div class="col">
+          <div class="card radius-15">
+            <div class="card-body text-center">
+              <div class="p-4 border radius-15">
+                {% if not worker.avatar %}
+                  <img src="{% static "images/user.jpg" %}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% else %}
+                  <img src="{{ worker.avatar.url }}" width="110" height="110"
+                       class="rounded-circle shadow" alt="">
+                {% endif %}
+                <h5 class="mb-0 mt-5">{{ worker }}</h5>
+                <p class="mb-3">{{ worker.position }}</p>
+                <div class="d-grid"><a href="{% url "tasks:worker-detail" pk=worker.id %}"
+                                       class="btn btn-outline-primary radius-15">View profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h4>No workers!</h4>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
