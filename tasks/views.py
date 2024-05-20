@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
+from django.http import HttpRequest, HttpResponse
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -26,7 +27,7 @@ from tasks.forms import (
 from tasks.models import Position, TaskType, Task, Worker, Commentary
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     return render(request, "tasks/welcome.html")
 
 
@@ -239,7 +240,7 @@ class WorkerFormatDeleteView(LoginRequiredMixin, generic.DeleteView):
         return reverse_lazy("tasks:worker-create")
 
 
-def upload_avatar(request, pk):
+def upload_avatar(request: HttpRequest, pk: int) -> HttpResponse:
     worker = get_object_or_404(Worker, pk=pk)
     if request.method == "POST":
         form = AvatarForm(request.POST, request.FILES, instance=worker)
@@ -293,7 +294,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
 
 
 @login_required
-def delete_comment(request, pk):
+def delete_comment(request: HttpRequest, pk: int) -> HttpResponse:
     comment = get_object_or_404(Commentary, pk=pk)
     if request.user != comment.user and not request.user.is_superuser:
         return HttpResponseForbidden("You are not allowed to delete this comment.")
