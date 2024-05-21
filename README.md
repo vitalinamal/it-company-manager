@@ -14,10 +14,10 @@ to this project.
 
 ## Usage
 
-- **Admin Interface**: Access the Django admin interface at `https://it-task-manager-3p6k.onrender.com/admin/` using the
+- **Admin Interface**: Access the Django admin interface at https://it-task-manager-3p6k.onrender.com/admin/ using the
   superuser
   credentials or the default credentials.
-- **Main Application**: Access the main application interface at `https://it-task-manager-3p6k.onrender.com/`.
+- **Main Application**: Access the main application interface at https://it-task-manager-3p6k.onrender.com/.
 
 ## Getting Started 🐌
 
