@@ -27,15 +27,15 @@ These instructions will help you set up and run the project on your local machin
 
 1. **Clone the repository**
    git clone https://github.com/vitalinamal/it-company-manager
-   cd task-manager
-2. **Create and activate a virtual environment**
+2. **cd task-manager**
+3. **Create and activate a virtual environment**
    python -m venv venv
    source venv/bin/activate # On Windows use `venv\Scripts\activate`
-3. **Install the required dependencies**
+4. **Install the required dependencies**
    pip install -r requirements.txt
-4. **Run the development server**
+5. **Run the development server**
    python manage.py runserver
-5. **Create a superuser**
+6. **Create a superuser**
    python manage.py createsuperuser
 
 If you prefer not to create a superuser, you can use the default credentials:
