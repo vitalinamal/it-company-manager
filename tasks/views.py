@@ -277,7 +277,7 @@ class CommentListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context["comment_form"] = CommentaryForm()
         context["task"] = get_object_or_404(
-            Task.objects.annotate(comment_count=Count("commentary")),
+            Task.objects.annotate(comment_count=Count("commentaries")),
             pk=self.kwargs["pk"],
         )
         return context

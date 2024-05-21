@@ -28,7 +28,7 @@ from tasks.views import (
 )
 
 urlpatterns = [
-    path("welcome/", index, name="welcome"),
+    path("", index, name="welcome"),
     path("positions/", PositionListView.as_view(), name="position-list"),
     path(
         "positions/create/", PositionFormatCreateView.as_view(), name="position-create"
