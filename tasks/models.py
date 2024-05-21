@@ -64,9 +64,9 @@ class Task(models.Model):
 
 class Commentary(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="commentary"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="commentaries"
     )
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="commentary")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="commentaries")
     created_time = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
 
