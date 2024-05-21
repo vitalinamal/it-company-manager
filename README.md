@@ -45,6 +45,8 @@ If you prefer not to create a superuser, you can use the default credentials:
 
 Thank you for using IT Task Manager!
 
+For more information and to access the live application, visit website: -
+
 ## Demo 
 
 ![IT Task Manager Screenshot](demo/demo.jpg)
