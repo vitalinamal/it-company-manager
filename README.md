@@ -12,6 +12,13 @@ to this project.
 - **Task Comments**: Add and delete comments on tasks to facilitate better communication and
   collaboration among team members.
 
+## Usage
+
+- **Admin Interface**: Access the Django admin interface at `https://it-task-manager-3p6k.onrender.com/admin/` using the
+  superuser
+  credentials or the default credentials.
+- **Main Application**: Access the main application interface at `https://it-task-manager-3p6k.onrender.com/`.
+
 ## Getting Started 🐌
 
 These instructions will help you set up and run the project on your local machine for development and testing purposes.
@@ -41,12 +48,10 @@ These instructions will help you set up and run the project on your local machin
 If you prefer not to create a superuser, you can use the default credentials:
 
     - **Username**: `admin.user`
-    - **Password**: `1qazcde3`
+    - **Password**: `aveled15`
 
 Thank you for using IT Task Manager!
 
-For more information and to access the live application, visit website: -
-
-## Demo 
+## Demo
 
 ![IT Task Manager Screenshot](demo/demo.jpg)
